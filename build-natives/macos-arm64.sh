@@ -15,12 +15,35 @@ ZLIB_PREFIX="$ROOT/build/prefix-zlib-macos-arm64"
 JPEG_PREFIX="$ROOT/build/prefix-jpeg-macos-arm64"
 DEST="$ROOT/natives/src/main/resources/libtiff-natives/macos-arm64"
 
+download_tar_gz() {
+  download_url=$1
+  download_archive=$2
+  download_attempt=1
+  while [ "$download_attempt" -le 5 ]; do
+    rm -f "$download_archive"
+    if curl --retry 5 --retry-delay 2 --retry-all-errors -sfL \
+        "$download_url" -o "$download_archive" \
+        && tar tzf "$download_archive" >/dev/null 2>&1; then
+      tar xzf "$download_archive" -C "$ROOT/build"
+      rm -f "$download_archive"
+      return 0
+    fi
+    echo "download attempt $download_attempt failed for $download_url" >&2
+    download_attempt=$((download_attempt + 1))
+    sleep 2
+  done
+  echo "ERROR: could not download a valid archive from $download_url" >&2
+  return 1
+}
+
 mkdir -p "$ROOT/build"
 if [ ! -d "$ZLIB_SRC" ]; then
-  curl -sfL "https://zlib.net/fossils/zlib-$ZLIB_VERSION.tar.gz" | tar xz -C "$ROOT/build"
+  download_tar_gz "https://github.com/madler/zlib/archive/refs/tags/v$ZLIB_VERSION.tar.gz" \
+    "$ROOT/build/.zlib-$ZLIB_VERSION.tar.gz"
 fi
 if [ ! -d "$JPEG_SRC" ]; then
-  curl -sfL "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/$JPEG_VERSION/libjpeg-turbo-$JPEG_VERSION.tar.gz" | tar xz -C "$ROOT/build"
+  download_tar_gz "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/$JPEG_VERSION/libjpeg-turbo-$JPEG_VERSION.tar.gz" \
+    "$ROOT/build/.libjpeg-turbo-$JPEG_VERSION.tar.gz"
 fi
 
 cmake -S "$ZLIB_SRC" -B "$ZLIB_SRC/build-macos-arm64" -G Ninja \
