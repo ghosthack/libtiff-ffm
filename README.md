@@ -20,12 +20,12 @@ built into libtiff itself.
 <dependency>
   <groupId>io.github.ghosthack</groupId>
   <artifactId>libtiff-ffm</artifactId>
-  <version>4.7.2-0.1.0-SNAPSHOT</version>
+  <version>4.7.2-0.1.0</version>
 </dependency>
 <dependency>
   <groupId>io.github.ghosthack</groupId>
   <artifactId>libtiff-ffm-natives</artifactId>
-  <version>4.7.2-0.1.0-SNAPSHOT</version>
+  <version>4.7.2-0.1.0</version>
   <classifier>macos-arm64</classifier> <!-- windows-x64 / linux-x64 -->
   <scope>runtime</scope>
 </dependency>

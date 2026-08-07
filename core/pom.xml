@@ -6,7 +6,7 @@
   <parent>
     <groupId>io.github.ghosthack</groupId>
     <artifactId>libtiff-ffm-parent</artifactId>
-    <version>4.7.2-0.1.0-SNAPSHOT</version>
+    <version>4.7.2-0.1.0</version>
   </parent>
   <artifactId>libtiff-ffm</artifactId>
   <packaging>jar</packaging>
