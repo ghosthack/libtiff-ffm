@@ -89,7 +89,7 @@ mkdir -p build
 curl -sfL https://download.osgeo.org/libtiff/tiff-4.7.2.tar.xz | tar xJ -C build
 build-natives/macos-arm64.sh
 jextract/gen-bindings.sh
-mvn clean install
+./mvnw clean install
 ```
 
 The native scripts fetch zlib and libjpeg-turbo themselves. Run the Windows
